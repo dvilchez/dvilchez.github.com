@@ -1,0 +1,177 @@
+---
+layout: post
+title: wcf, nettcpbinding message security
+categories: []
+tags: []
+status: draft
+type: post
+published: false
+meta:
+  _jd_tweet_this: 'yes'
+  _jd_twitter: ''
+  _wp_jd_clig: ''
+  _wp_jd_bitly: ''
+  _wp_jd_wp: ''
+  _wp_jd_yourls: ''
+  _wp_jd_url: ''
+  _wp_jd_target: ''
+  _jd_wp_twitter: ''
+  _jd_post_meta_fixed: 'true'
+  _gdocID: 13U0uZNOAgHrtOCr7iu0lBQCllTJn5Dler39tOab4FGw
+  _gdocs_comments: ''
+author: 
+---
+<p>netTcpBinding no soporta custom autyhentication an ivel de transporte pero si a nivel de emnsaje:</p>
+<p><a class="c1" href="http://blog.rees.biz/2011/02/wcf-security-nettcpbinding-with-custom.html">http://blog.rees.biz/2011/02/wcf-security-nettcpbinding-with-custom.html</a></p>
+<p><a class="c1" href="http://blog.rees.biz/2011/02/using-x509-certificates-with-wcf.html">http://blog.rees.biz/2011/02/using-x509-certificates-with-wcf.html</a></p>
+<p>0º generar e instalar el certificado (cliente y servidor???) esta parte quiero revisarla</p>
+<p>registrar y autorizar:</p>
+<p>registrar certificado</p>
+<p>findprivatekey.exe AuthRoot localmachine -t "bb ba 40 57 1a 2e f0 85 e2 8a c8 0a 9f 11 8d bf dc a7 2d 56" -a</p>
+<p>cacls "%ALLUSERSPROFILE%Application DataMicrosoftCryptoRSAMachinekeys577ea0c2f38e3793c2a32172722bd063_e490f40a-79eb-47c7-8b4d-5c5ec79eba0d" /E /G "SERVICIO LOCAL":R</p>
+<p><strong></strong></p>
+<p>Esto lo hace todo pero no funciona</p>
+<p>winhttpcertcfg.exe -g -i Nebula.pfx -c "LOCAL_MACHINEAuthRoot" -a "SERVICIO LOCAL"</p>
+<p><strong>posible error </strong><strong>Mensaje: El conjunto de claves no existe</strong></p>
+<p><a class="c1" href="http://msdn.microsoft.com/en-us/library/aa702621.aspx">http://msdn.microsoft.com/en-us/library/aa702621.aspx</a></p>
+<p>Para corregir este error, confirme que la cuenta de servicio del proxy tiene el permiso Control total establecido en Permitir en la carpeta MachineKeys de RSA, ubicada en la carpeta Documents and Settings (por ejemplo, C:Documents and SettingsAll UsersDatos de programaMicrosoftCryptoRSA).<a class="c1" href="http://msdn.microsoft.com/es-es/library/ms400681(v=vs.90).aspx">http://msdn.microsoft.com/es-es/library/ms400681(v=vs.90).aspx</a></p>
+<p>ruta windows 7 %ALLUSERSPROFILE%Application DataMicrosoft<strong>Crypto</strong><strong>RSA</strong></p>
+<p>como manejar los certificados sin volverte loco:</p>
+<p><a class="c1" href="http://msdn.microsoft.com/en-us/library/ms788967.aspx">http://msdn.microsoft.com/en-us/library/ms788967.aspx</a></p>
+<p>my=personal</p>
+<p>authroot=entidades de certificación razi de terceros</p>
+<p>root=entidades de certificación raiz de confianza</p>
+<p>Otro error:</p>
+<p><a class="c1" href="http://ayende.com/blog/1441/unable-to-obtain-public-key-for-strongnamekeypair">http://ayende.com/blog/1441/unable-to-obtain-public-key-for-strongnamekeypair</a></p>
+<h1 class="c0">cuadado con dar permisos a otras cuentas , justo lo que esta tachado arriba</h1>
+<h1 class="c0"><a class="c1" href="http://ayende.com/blog/1441/unable-to-obtain-public-key-for-strongnamekeypair">Unable to obtain public key for StrongNameKeyPair</a></h1>
+<p>1ºConfiguramos el servicio Web.config</p>
+<p>&lt;behaviors&gt;</p>
+<p>      &lt;serviceBehaviors&gt;</p>
+<p>        &lt;behavior&gt;</p>
+<p>          &lt;serviceCredentials&gt;</p>
+<p>            &lt;userNameAuthentication</p>
+<p>                userNamePasswordValidationMode="Custom"</p>
+<p>                customUserNamePasswordValidatorType="<strong>Serinfer.Nebula.Host.NebulaValidation</strong>, Serinfer.Nebula.Host"/&gt;</p>
+<p>            &lt;serviceCertificate</p>
+<p>                findValue="cn=Nebula"</p>
+<p>                storeLocation="LocalMachine"</p>
+<p>                storeName="AuthRoot"/&gt;</p>
+<p>            &lt;clientCertificate&gt;</p>
+<p>              &lt;certificate</p>
+<p>                  findValue="cn=Nebula"</p>
+<p>                  storeLocation="LocalMachine"</p>
+<p>                  storeName="AuthRoot"/&gt;</p>
+<p>            &lt;/clientCertificate&gt;</p>
+<p>          &lt;/serviceCredentials&gt;</p>
+<p>        &lt;/behavior&gt;</p>
+<p>      &lt;/serviceBehaviors&gt;</p>
+<p>    &lt;/behaviors&gt;</p>
+<p>Los servicios como los sirvo a traves de IIS no es necesario decsribirlos pero...</p>
+<p>&lt;services&gt;</p>
+<p>      &lt;service name="Serinfer.Nebula.Application.UsuarioAppService"&gt;</p>
+<p>        &lt;endpoint address="" binding="netTcpBinding" contract="Serinfer.Nebula.Commons.ServiceContract.IUsuarioAppService"&gt;</p>
+<p>          &lt;identity&gt;</p>
+<p>            &lt;dns value="cn=Nebula" /&gt;</p>
+<p>            &lt;!&mdash; This matches the x509 certificate name &mdash;&gt;</p>
+<p>          &lt;/identity&gt;</p>
+<p>        &lt;/endpoint&gt;</p>
+<p>        &lt;endpoint address="mex" binding="mexTcpBinding" contract="IMetadataExchange" /&gt;</p>
+<p>      &lt;/service&gt;</p>
+<p>      &lt;service name="Serinfer.Nebula.Application.ClienteAppService"&gt;</p>
+<p>        &lt;endpoint address="" binding="netTcpBinding" contract="Serinfer.Nebula.Commons.ServiceContract.IClienteAppService"&gt;</p>
+<p>        &lt;/endpoint&gt;</p>
+<p>        &lt;endpoint address="mex" binding="mexTcpBinding" contract="IMetadataExchange" /&gt;</p>
+<p>      &lt;/service&gt;</p>
+<p>      &lt;service name="Serinfer.Nebula.Application.ConfiguradorVehiculosAppService"&gt;</p>
+<p>        &lt;endpoint address="" binding="netTcpBinding" contract="Serinfer.Nebula.Commons.ServiceContract.IConfiguradorVehiculosAppService"&gt;</p>
+<p>        &lt;/endpoint&gt;</p>
+<p>        &lt;endpoint address="mex" binding="mexTcpBinding" contract="IMetadataExchange" /&gt;</p>
+<p>      &lt;/service&gt;</p>
+<p>      &lt;service name="Serinfer.Nebula.Application.VehiculoAppService"&gt;</p>
+<p>        &lt;endpoint address="" binding="netTcpBinding" contract="Serinfer.Nebula.Commons.ServiceContract.IVehiculoAppService"&gt;</p>
+<p>        &lt;/endpoint&gt;</p>
+<p>        &lt;endpoint address="mex" binding="mexTcpBinding" contract="IMetadataExchange" /&gt;</p>
+<p>      &lt;/service&gt;</p>
+<p>      &lt;service name="Serinfer.Nebula.Application.InformeAppService"&gt;</p>
+<p>        &lt;endpoint address="" binding="netTcpBinding" contract="Serinfer.Nebula.Commons.ServiceContract.IInformeAppService"&gt;</p>
+<p>        &lt;/endpoint&gt;</p>
+<p>        &lt;endpoint address="mex" binding="mexTcpBinding" contract="IMetadataExchange" /&gt;</p>
+<p>      &lt;/service&gt;</p>
+<p>      &lt;service name="Serinfer.Nebula.Application.CampanhaAppService"&gt;</p>
+<p>        &lt;endpoint address="" binding="netTcpBinding" contract="Serinfer.Nebula.Commons.ServiceContract.ICampanhaAppService"&gt;</p>
+<p>        &lt;/endpoint&gt;</p>
+<p>        &lt;endpoint address="mex" binding="mexTcpBinding" contract="IMetadataExchange" /&gt;</p>
+<p>      &lt;/service&gt;</p>
+<p>    &lt;/services&gt;</p>
+<p>2ºConfigurar el cliente</p>
+<p>Regsitro de los servicios con wcffacility</p>
+<p>public void Configure(IWindsorContainer container)</p>
+<p>        {</p>
+<p>            container.AddFacility&lt;WcfFacility&gt;();</p>
+<p>            var credentials = new UserNameCredentials();</p>
+<p>         var clientServiceAssembly = typeof (IConfiguradorVehiculosAppService).Assembly;</p>
+<p>            var clientServices = clientServiceAssembly.GetTypes().Where(t =&gt; t.Namespace!=null</p>
+<p>                &amp;&amp; t.GetCustomAttributes(typeof(ServiceContractAttribute),false).Count()==1 &amp;&amp; t.IsInterface);</p>
+<p>            foreach (var service in clientServices)</p>
+<p>            {</p>
+<p>                var ep = new NetTcpBinding(SecurityMode.Message);</p>
+<p>                ep.MaxReceivedMessageSize = 5000000;</p>
+<p>                ep.ReaderQuotas.MaxArrayLength = 5000000;</p>
+<p>                ep.Security.Message.ClientCredentialType = MessageCredentialType.UserName;</p>
+<p>                ep.Security.Message.AlgorithmSuite = SecurityAlgorithmSuite.Default;</p>
+<p>                ep.Security.Transport.ClientCredentialType = TcpClientCredentialType.Windows;</p>
+<p>                ep.Security.Transport.ProtectionLevel = ProtectionLevel.EncryptAndSign;</p>
+<p>                container.Register(Component</p>
+<p>                                   .For(service)</p>
+<p>                                   .AsWcfClient(new DefaultClientModel()</p>
+<p>                                   {</p>
+<p>                                       Endpoint =</p>
+<p>                                           WcfEndpoint.BoundTo(ep).At(</p>
+<p>                                           new EndpointAddress(</p>
+<p>                                              GetAddressForService(service),EndpointIdentity.CreateDnsIdentity("Nebula")))</p>
+<p>                                   }<br />
+.Credentials(credentials)).Interceptors&lt;LogAspect&gt;());</p>
+<p>            }</p>
+<p>            container.Register(Component.For&lt;UserNameCredentials&gt;().Instance(credentials));</p>
+<p>            container.Register(Component.For&lt;LogAspect&gt;());</p>
+<p>        }</p>
+<p><a class="c1" href="http://msdn.microsoft.com/en-us/library/ms733130.aspx">http://msdn.microsoft.com/en-us/library/ms733130.aspx</a></p>
+<p>3ºValidacion</p>
+<p>cuantas veces se llama a al validación en un servicio con session </p>
+<p>        sólo una vez, cuando se abre el canal</p>
+<p>y sin session?</p>
+<p>        sólo una vez, por qué? no se el canal es lo único que mantiene la sesión</p>
+<p>custom user name: </p>
+<p><a class="c1" href="http://msdn.microsoft.com/es-es/library/ms733082(v=VS.90).aspx">http://msdn.microsoft.com/es-es/library/ms733082(v=VS.90).aspx</a><a class="c1" href="http://blogs.msdn.com/b/pedram/archive/2007/10/05/wcf-authentication-custom-username-and-password-validator.aspx">http://blogs.msdn.com/b/pedram/archive/2007/10/05/wcf-authentication-custom-username-and-password-validator.aspx</a></p>
+<p>public class NebulaUserAuthentication: UserNamePasswordValidator</p>
+<p>    {</p>
+<p>        public override void Validate(string userName, string password)</p>
+<p>        {</p>
+<p>            // peform</p>
+<p>            if (null == userName || null == password)</p>
+<p>            {</p>
+<p>                throw new ArgumentNullException();</p>
+<p>            }</p>
+<p>            if (!(userName == "pvilla" &amp;&amp; password == "cpvilla"))</p>
+<p>            {</p>
+<p>                throw new SecurityTokenException("Unknown Username or Incorrect Password");</p>
+<p>            }</p>
+<p>        }</p>
+<p>    }</p>
+<p>custom authorization</p>
+<p><a class="c1" href="http://msdn.microsoft.com/en-us/library/ms731774.aspx">http://msdn.microsoft.com/en-us/library/ms731774.aspx</a></p>
+<p><a class="c1" href="http://msdn.microsoft.com/es-es/library/ms733071(v=VS.90).aspx">http://msdn.microsoft.com/es-es/library/ms733071(v=VS.90).aspx</a></p>
+<p> public class NebulaUserAuthorization : ServiceAuthorizationManager</p>
+<p>    {</p>
+<p>        protected override bool CheckAccessCore(OperationContext operationContext)</p>
+<p>        {</p>
+<p>            // Extract the action URI from the OperationContext. Match this against the claims</p>
+<p>            // in the AuthorizationContext.</p>
+<p>            string action = operationContext.RequestContext.RequestMessage.Headers.Action;</p>
+<p>            // If this point is reached, return false to deny access.</p>
+<p>            return true;             </p>
+<p>        }</p>
+<p>    }</p>
+<p>custom authentication</p>
+<h3 class="c0">How to: WCF and custom Authentication (username/password)</h3>

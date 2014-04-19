@@ -1,0 +1,37 @@
+---
+layout: post
+title: clickonce dependecies deploy
+categories: []
+tags: []
+status: draft
+type: post
+published: false
+meta:
+  _jd_tweet_this: 'yes'
+  _jd_twitter: ''
+  _wp_jd_clig: ''
+  _wp_jd_bitly: ''
+  _wp_jd_wp: ''
+  _wp_jd_yourls: ''
+  _wp_jd_url: ''
+  _wp_jd_target: ''
+  _jd_wp_twitter: ''
+  _jd_post_meta_fixed: 'true'
+  _gdocID: 1X0zF7yRLHxm52valGDRWNvOo8b0iV-VbQ_rogWsYxRc
+  _gdocs_comments: ''
+author: 
+---
+<p>distinguir entre dlls en la carpeta bin y dlls que se meten en el manifiesto:</p>
+<p>1-msbuild no incluye en la carpeta las dlls que estan en la gac aunque le pongas el copylocal a true</p>
+<p>2-para configurar a mano las dlls que se inlcuyen en el manifiesto de clickonce</p>
+<p>&lt;PublishFile Include="DevExpress.XtraNavBar.v11.2"&gt;</p>
+<p>      &lt;Visible&gt;False&lt;/Visible&gt;</p>
+<p>      &lt;Group&gt;</p>
+<p>      &lt;/Group&gt;</p>
+<p>      &lt;TargetPath&gt;</p>
+<p>      &lt;/TargetPath&gt;</p>
+<p>      &lt;PublishState&gt;Exclude&lt;/PublishState&gt;</p>
+<p>      &lt;IncludeHash&gt;True&lt;/IncludeHash&gt;</p>
+<p>      &lt;FileType&gt;Assembly&lt;/FileType&gt;</p>
+<p>    &lt;/PublishFile&gt;</p>
+<p>si le pones (auto) dejas que la tarea de msbuild la configure e include(auto) no quiere decir que la vaya a incluir</p>

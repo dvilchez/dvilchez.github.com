@@ -1,0 +1,75 @@
+---
+layout: post
+title: Communication with the underlying transaction manager has failed
+categories:
+- shortpost
+tags:
+- msdtc
+status: publish
+type: post
+published: true
+meta: {}
+author:
+  login: david
+  email: dvilchezm@gmail.com
+  display_name: David Vílchez Mendoza
+  first_name: David
+  last_name: Vílchez Mendoza
+---
+<p><strong>El problema:</strong></p>
+<p><em>"Hola,</em></p>
+<p><em>Tengo un problema con el msdtc y me preguntaba si tal vez podíais</em></p>
+<p><em>echarme un cable. Estoy haciendo una aplicación Windows form, la base</em></p>
+<p><em>de datos esta en un Windows 2003 server (service pack 1) y el web</em></p>
+<p><em>service en un Windows xp(service pack 2). El problema viene con las</em></p>
+<p><em>transacciones dtc que me lanzan un error:</em></p>
+<p><em>Mensaje: Error de comunicación con el administrador de transacciones</em></p>
+<p><em>subyacente.</em></p>
+<p><em>Source:</em></p>
+<p><em>Traza:</em></p>
+<p><em>HelpLink:</em></p>
+<p><em>--------------------------------------------------------</em></p>
+<p><em>InnerException</em></p>
+<p><em>--------------------------------------------------------</em><br />
+<em>Mensaje: Error de comunicación con el administrador de transacciones</em></p>
+<p><em>subyacente.</em></p>
+<p><em>Source: System.Data</em></p>
+<p><em>Traza: en</em></p>
+<p><em>System.Data.Common.DbDataAdapter.UpdatedRowStatusErrors(RowUpdatedEventArgs</em></p>
+<p><em>rowUpdatedEvent, BatchCommandInfo[] batchCommands, Int32 commandCount)</em></p>
+<p><em>en</em></p>
+<p><em>System.Data.Common.DbDataAdapter.UpdatedRowStatus(RowUpdatedEventArgs</em></p>
+<p><em>rowUpdatedEvent, BatchCommandInfo[] batchCommands, Int32 commandCount)</em></p>
+<p><em>en System.Data.Common.DbDataAdapter.Update(DataRow[] dataRows,</em></p>
+<p><em>DataTableMapping tableMapping) en</em></p>
+<p><em>System.Data.Common.DbDataAdapter.UpdateFromDataTable(DataTable</em></p>
+<p><em>dataTable, DataTableMapping tableMapping) en</em></p>
+<p><em>System.Data.Common.DbDataAdapter.Update(DataTable dataTable) en</em></p>
+<p><em>Encuesta.CapaEntidad.EncuestaDSTableAdapters.PRG_PREGUNTATableAdapter.Update(PRG_PREGUNTADataTable</em></p>
+<p><em>dataTable) en Encuesta.CapaDatos.EncuestaAD.Actualizar(EncuestaDS</em></p>
+<p><em>Encuesta) en Encuesta.CapaNegocio.EncuestaCN.Actualizar(EncuestaDS</em></p>
+<p><em>Encuesta)</em></p>
+<p><em>TargetSite: Void</em></p>
+<p><em>UpdatedRowStatusErrors(System.Data.Common.RowUpdatedEventArgs,</em></p>
+<p><em>BatchCommandInfo[], Int32)</em></p>
+<p><em>HelpLink:</em></p>
+<p><em>Este error esta más que documentado así que me descargue el dtcping</em></p>
+<p><em>para que me ayudara a resolverlo. El dtcping me da el siguiente error:</em></p>
+<p><em>Problem:fail to invoke remote RPC method</em></p>
+<p><em>Error(0x6D9) at dtcping.cpp @303</em></p>
+<p><em>--&gt;RPC pinging exception</em></p>
+<p><em>--&gt;1753(There are no more endpoints available from the endpoint</em></p>
+<p><em>mapper.)</em></p>
+<p><em>RPC test failed</em></p>
+<p><em>También esta documentado (<a href="http://support.microsoft.com/?id=839880">http://support.microsoft.com/?id=839880</a>)</em></p>
+<p><em>pero he seguido esta guía al pie de la letra y no he avanzado nada,</em></p>
+<p><em>¿ha alguien se le ocurre que más puedo hacer?</em></p>
+<p><em>Muchas gracias si has llegado hasta aquí leyendo. :P"</em></p>
+<p><strong>La solución:</strong></p>
+<p>1º Añadir al servidor “Enable Network DTC Access “</p>
+<p><a href="http://dvilchez.net/wp-content/uploads/2008/02/dtc.JPG" title="dtc.JPG"><img src="http://dvilchez.net/wp-content/uploads/2008/02/dtc.JPG" alt="dtc.JPG" /></a></p>
+<p>2º Habilitar en el cliente y en el servidor “Enable COM Internet Services on this computer”</p>
+<p><a href="http://dvilchez.net/wp-content/uploads/2008/02/com.JPG" title="com.JPG"><img src="http://dvilchez.net/wp-content/uploads/2008/02/com.JPG" alt="com.JPG" /></a></p>
+<p>Fuentes:</p>
+<p><a href="http://www.malagadnug.org/">Málaga .NET User Group</a></p>
+<p><a href="http://www.webservertalk.com/message458751.html">www.webservertalk.com</a></p>

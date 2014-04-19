@@ -1,0 +1,54 @@
+---
+layout: post
+title: Obtener ip
+categories:
+- snippets
+tags:
+- c#
+- ip
+- System.Net
+status: publish
+type: post
+published: true
+meta: {}
+author:
+  login: david
+  email: dvilchezm@gmail.com
+  display_name: David Vílchez Mendoza
+  first_name: David
+  last_name: Vílchez Mendoza
+---
+<p>[csharp]<br />
+namespace NKUtilities<br />
+{<br />
+    using System;<br />
+    using System.Net;</p>
+<p>    public class DNSUtility<br />
+    {<br />
+        public static int Main(string[] args)<br />
+        {</p>
+<p>            String strHostName = new String("");<br />
+            if (args.Length == 0)<br />
+            {<br />
+                // Getting Ip address of local machine...<br />
+                // First get the host name of local machine.<br />
+                strHostName = DNS.GetHostName();<br />
+                Console.WriteLine("Local Machine's Host Name: " + strHostName);<br />
+            }<br />
+            else<br />
+            {<br />
+                strHostName = args[0];<br />
+            }</p>
+<p>            // Then using host name, get the IP address list..<br />
+            IPHostEntry ipEntry = DNS.GetHostByName(strHostName);<br />
+            IPAddress[] addr = ipEntry.AddressList;</p>
+<p>            for (int i = 0; i < addr.Length; i++)<br />
+            {<br />
+                Console.WriteLine("IP Address {0}: {1} ", i, addr[i].ToString());<br />
+            }<br />
+            return 0;<br />
+        }<br />
+    }<br />
+}<br />
+[/csharp]</p>
+<p>Via <a href="http://www.netomatix.com/MachineIp.aspx">netomatix</a></p>

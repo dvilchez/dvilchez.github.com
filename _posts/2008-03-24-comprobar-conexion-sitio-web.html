@@ -1,0 +1,43 @@
+---
+layout: post
+title: Comprobar conexión sitio web
+categories:
+- snippets
+tags:
+- c#
+- snippets
+status: publish
+type: post
+published: true
+meta: {}
+author:
+  login: david
+  email: dvilchezm@gmail.com
+  display_name: David Vílchez Mendoza
+  first_name: David
+  last_name: Vílchez Mendoza
+---
+<p>[csharp]<br />
+try<br />
+{<br />
+	HttpWebRequest reqFP = (HttpWebRequest)HttpWebRequest.Create(this.Url);<br />
+	HttpWebResponse rspFP = (HttpWebResponse)reqFP.GetResponse();</p>
+<p>	if (HttpStatusCode.OK == rspFP.StatusCode)<br />
+	{<br />
+		// HTTP = 200 - Internet connection available, server online<br />
+		rspFP.Close();<br />
+		return true;<br />
+	}<br />
+	else<br />
+	{<br />
+		// Other status - Server or connection not available<br />
+		rspFP.Close();<br />
+		return false;<br />
+	}<br />
+}<br />
+catch (WebException)<br />
+{<br />
+	// Exception - connection not available<br />
+	return false;<br />
+}<br />
+[/csharp]</p>

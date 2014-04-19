@@ -1,0 +1,54 @@
+---
+layout: post
+title: DispatchOperationRuntime y Excepciones. Mi respuesta.
+categories:
+- programación
+tags:
+- wcf DispatchOperationRuntime excepciones
+status: publish
+type: post
+published: true
+meta:
+  _wp_jd_url: ''
+  _wp_jd_target: http://dvilchez.net/?p=383
+  _jd_wp_twitter: 'a:3:{i:0;s:86:"Nuevo post: DispatchOperationRuntime y Excepciones.
+    Mi respuesta. http://bit.ly/znD19D";i:1;s:92:"Post actualizado: DispatchOperationRuntime
+    y Excepciones. Mi respuesta. http://bit.ly/znD19D";i:2;s:92:"Post actualizado:
+    DispatchOperationRuntime y Excepciones. Mi respuesta. http://bit.ly/znD19D";}'
+  _jd_post_meta_fixed: 'true'
+  _edit_last: '2'
+  _wp_jd_yourls: ''
+  _wp_jd_wp: ''
+  _wp_jd_clig: ''
+  _wp_jd_bitly: http://bit.ly/znD19D
+  _jd_twitter: ''
+  _jd_tweet_this: 'yes'
+author:
+  login: david
+  email: dvilchezm@gmail.com
+  display_name: David Vílchez Mendoza
+  first_name: David
+  last_name: Vílchez Mendoza
+---
+<p>Lo primero que anda mal es el mensaje que lanza la excepción.</p>
+<p><a href="http://dvilchez.net/wp-content/uploads/2012/03/error_incorrecto1.png"><img class="alignnone size-full wp-image-389" title="error_incorrecto" alt="" src="http://dvilchez.net/wp-content/uploads/2012/03/error_incorrecto1.png" width="617" height="29" /></a></p>
+<p>Pero realmente el método al que se llamo fue:</p>
+<p><a href="http://dvilchez.net/wp-content/uploads/2012/03/llamada.png"><img class="alignnone size-full wp-image-388" title="llamada" alt="" src="http://dvilchez.net/wp-content/uploads/2012/03/llamada.png" width="361" height="39" /></a></p>
+<p>Esto, a parte de hacerte perder unas horas intentando determinar el problema, es un mal menor y un error que le puede pasar a cualquiera.</p>
+<p>Para mi el problema mas grande esta en la llamada a DiagnosticUtility.FailFast. Este método recibe un mensaje (el de arriba), el tipo de excepción que se captura y el mensaje de la excepción, pero perdemos el resto de información. Por tanto lo que se muestra a la salida es esto:</p>
+<p><a href="http://dvilchez.net/wp-content/uploads/2012/03/image001.png"><img class="alignnone  wp-image-390" title="image001" alt="" src="http://dvilchez.net/wp-content/uploads/2012/03/image001.png" width="545" height="281" /></a></p>
+<p>Bastante inútil, ¿no creéis? Sin embargo la excepción original incluía la verdadera pila de llamadas y podíamos determinar exactamente donde se generaba la excepción, que por cierto era un error de desbordamiento al hacer el flush de nhibernate.</p>
+<p>Como no podemos tocar el código de WCF (DispatchOperationRuntime) tendremos que ser más imaginativos. Al final opte por envolver la excepción original en otra que devolviera como mensaje toda la información que me parecía relevante. Supongo que podría haber intentado una solución más elegante con algo de AOP pero también más compleja.</p>
+<p><strong>Update:</strong></p>
+<p>Es posible aunque no lo he probado que mediante las capacidades de extensión de WCF podamos usar nuestro propio Dispatcher. ¿Alguien lo confirma?</p>
+<address><strong>Referencias:</strong></address>
+<address><strong></strong><br />
+<a href="http://dvilchez.net/?p=378">¿Qué anda mal en este código? DispatchOperationRuntime y Excepciones</a></address>
+<address><a href="http://msdn.microsoft.com/es-es/library/system.servicemodel.dispatcher.icallcontextinitializer.aspx">http://msdn.microsoft.com/es-es/library/system.servicemodel.dispatcher.icallcontextinitializer.aspx</a></address>
+<address><a href="http://fabiomaulo.blogspot.com.es/2009/10/nhibernate-wcf-session-per-call-in.html">http://fabiomaulo.blogspot.com.es/2009/10/nhibernate-wcf-session-per-call-in.html</a></address>
+<address><a href="http://reflector.webtropy.com/default.aspx/WCF/WCF/3@5@30729@1/untmp/Orcas/SP/ndp/cdf/src/WCF/ServiceModel/System/ServiceModel/Dispatcher/DispatchOperationRuntime@cs/3/DispatchOperationRuntime@cs">http://reflector.webtropy.com/.</a>..</address>
+<p>&nbsp;</p>
+<div id="-chrome-auto-translate-plugin-dialog" style="opacity: 1 !important; background-image: initial !important; background-attachment: initial !important; background-origin: initial !important; background-clip: initial !important; background-color: transparent !important; position: absolute !important; top: 0px; left: 0px; overflow-x: visible !important; overflow-y: visible !important; z-index: 999999 !important; text-align: left !important; display: none; padding: 0px !important; margin: 0px !important;">
+<div style="max-width: 300px !important; color: #fafafa !important; opacity: 0.8 !important; border-color: #000000 !important; border-width: 0px !important; -webkit-border-radius: 10px !important; background-color: #363636 !important; font-size: 16px !important; padding: 8px !important; overflow: visible !important; background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #000), color-stop(50%, #363636), color-stop(100%, #000)); z-index: 999999 !important; text-align: left  !important;"></div>
+<p><img style="position: absolute !important; z-index: -1 !important; right: 1px !important; top: -20px !important; cursor: pointer !important; -webkit-border-radius: 20px; background-color: rgba(200, 200, 200, 0.3) !important; padding: 3px 5px 0 !important; margin: 0 !important;" onclick="document.location.href='http://translate.google.com/';" alt="" src="http://www.google.com/uds/css/small-logo.png" /></p>
+</div>

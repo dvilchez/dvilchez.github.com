@@ -1,0 +1,51 @@
+---
+layout: post
+title: Dynamic dispatch en c#
+categories: []
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _jd_tweet_this: 'yes'
+  _jd_twitter: ''
+  _wp_jd_clig: ''
+  _wp_jd_bitly: http://bit.ly/wGMI0q
+  _wp_jd_wp: ''
+  _wp_jd_yourls: ''
+  _wp_jd_url: ''
+  _wp_jd_target: http://dvilchez.net/?p=367
+  _jd_wp_twitter: 'Nuevo post: Dynamic dispatch en c# http://bit.ly/wGMI0q'
+  _jd_post_meta_fixed: 'true'
+  _gdocID: 1zvgBr9zcs-ec8abOHziDqPsvGIEP8TqmHTvQckd_O5I
+  _gdocs_comments: ''
+  _edit_last: '2'
+author:
+  login: david
+  email: dvilchezm@gmail.com
+  display_name: David Vílchez Mendoza
+  first_name: David
+  last_name: Vílchez Mendoza
+---
+<p><!-- code formatted by http://manoli.net/csharpformat/ --></p>
+<pre class="csharpcode">
+    <span class="kwrd">private</span> <span class="kwrd">void</span> Application_DispatcherUnhandledException(
+           <span class="kwrd">object</span> sender
+          , DispatcherUnhandledExceptionEventArgs e)
+    {
+        Process((<span class="kwrd">dynamic</span>)e.Exception);
+    }
+
+    <span class="kwrd">public</span> <span class="kwrd">void</span> Process(Exception exception)
+    {
+        Log.Warn(<span class="str">"Exception"</span>);
+    }
+
+    <span class="kwrd">public</span> <span class="kwrd">void</span> Process(ArgumentException exception)
+    {
+        Log.Debug(<span class="str">"ArgumentException"</span>);
+    }</pre>
+<p><strong id="internal-source-marker_0.39775900659151375">Referencias:<br />
+<a href="http://en.wikipedia.org/wiki/Dynamic_dispatch">http://en.wikipedia.org/wiki/Dynamic_dispatch</a><br />
+<a href="http://mstecharchitect.blogspot.com/2008/11/how-to-handle-unhandled-exception-in.html">http://mstecharchitect.blogspot.com/2008/11/how-to-handle-unhandled-exception-in.html</a><br />
+<a href="http://msdn.microsoft.com/en-us/library/dd264736.aspx">http://msdn.microsoft.com/en-us/library/dd264736.aspx</a></strong></p>

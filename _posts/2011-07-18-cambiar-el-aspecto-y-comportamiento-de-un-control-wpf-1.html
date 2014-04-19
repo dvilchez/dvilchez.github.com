@@ -1,0 +1,81 @@
+---
+layout: post
+title: Cambiar el aspecto y comportamiento de un control WPF 1
+categories: []
+tags: []
+status: draft
+type: post
+published: false
+meta:
+  _jd_post_meta_fixed: 'true'
+  _edit_last: '2'
+  _jd_wp_twitter: ''
+  _wp_jd_target: ''
+  _wp_jd_url: ''
+  _wp_jd_yourls: ''
+  _wp_jd_wp: ''
+  _wp_jd_bitly: ''
+  _wp_jd_clig: ''
+  _jd_twitter: ''
+  _jd_tweet_this: 'yes'
+author:
+  login: david
+  email: dvilchezm@gmail.com
+  display_name: David Vílchez Mendoza
+  first_name: David
+  last_name: Vílchez Mendoza
+---
+<p>Supon que usas un control para mostrar datos de froma tabulada.</p>
+<pre class="brush:xml">&lt;GridView&gt;
+</pre>
+<p>Este control adem&aacute;s es capaz de filtrar los datos que muestra por columna. Pero estos filtros no se muestran al usuario. Supon tambien que quieres mostrarlos al usuario como un divertido texto.</p>
+<pre class="brush:xml">&lt;TextBlock&gt;
+</pre>
+<p>Empecemos por cambiar el aspecto:</p>
+<pre class="brush:xml">&lt;Grid&gt;
+    &lt;Grid.RowDefinitions&gt;
+        &lt;RowDefinition /&gt;
+        &lt;RowDefinition Height="*" /&gt;
+    &lt;/Grid.RowDefinitions&gt;
+    &lt;TextBlock x:Name="Filtros" Background="White" Foreground="Black"&nbsp; /&gt;
+    &lt;custom:GridView&gt;
+
+    &lt;!-- // --&gt;
+
+    &lt;/custom:GridView&gt;
+&lt;/Grid&gt;
+</pre>
+<p>Bastante tonto :D. &iquest;Y si quisieramos cambiarlo para todos nuestros GridView? &iquest;Copy/Paste?</p>
+<p><strong>Control Templates[1] al rescate.</strong></p>
+<p>Con un control template podemos cambiar totalmente el aspecto de nuestro control sin influir en el comportamiento, siempre y cuendo no toquemos los template parts[2].</p>
+<p>El que lleva de serie nuestro GridView es este:</p>
+<pre class="brush:xml">&lt;ControlTemplate TargetType="{x:Type custom:GridView}"&gt;
+    &lt;AdornerDecorator&gt;
+        &lt;Border x:Name="PART_MasterGridContainer" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}"&gt;
+            &lt;Grid x:Name="HierrarchyBackground" Background="{TemplateBinding Background}"&gt;
+</pre>
+<p>Vamos a definir nuestro Control Template.</p>
+<pre class="brush:xml">&lt;Style x:Key="GridViewStyle" TargetType="{x:Type custom:GridView}"&gt;
+    &lt;Setter Property="Template"&gt;
+    &lt;Setter.Value&gt;
+        &lt;ControlTemplate TargetType="{x:Type custom:GridView}"&gt;
+            &lt;Grid&gt;
+                &lt;Grid.RowDefinitions&gt;
+                    &lt;RowDefinition /&gt;
+                    &lt;RowDefinition Height="*" /&gt;
+                &lt;/Grid.RowDefinitions&gt;
+                &lt;TextBlock x:Name="Filtros" Background="White" Foreground="Black"&nbsp; /&gt;
+                &lt;AdornerDecorator Grid.Row="1"&gt;
+                    &lt;Border x:Name="PART_MasterGridContainer" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}"&gt;
+                        &lt;Grid x:Name="HierrarchyBackground" Background="{TemplateBinding Background}"&gt;
+</pre>
+<p>Y ahora lo aplicamos a nuestro GridView</p>
+<pre class="brush:xml">&lt;custom:GridView Style="{DynamicResource GridViewStyle}"&gt;
+
+&lt;!-- // --&gt;
+
+&lt;/custom:GridView&gt;
+</pre>
+<p>Tachan!!!</p>
+<p>[1]-<a href="http://www.wpftutorial.net/Templates.html">http://www.wpftutorial.net/Templates.html</a><br />
+ [2]-<a href="http://devlicio.us/blogs/christopher_bennage/archive/2008/03/09/identifying-control-templates-parts-in-wpf.aspx">http://devlicio.us/blogs/christopher_bennage/archive/2008/03/09/identifying-control-templates-parts-in-wpf.aspx</a></p>

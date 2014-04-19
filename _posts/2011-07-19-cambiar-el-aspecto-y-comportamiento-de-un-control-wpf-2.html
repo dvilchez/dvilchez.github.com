@@ -1,0 +1,94 @@
+---
+layout: post
+title: Cambiar el aspecto y comportamiento de un control WPF 2
+categories: []
+tags: []
+status: draft
+type: post
+published: false
+meta:
+  _jd_post_meta_fixed: 'true'
+  _edit_last: '2'
+  _jd_wp_twitter: ''
+  _wp_jd_target: ''
+  _wp_jd_url: ''
+  _wp_jd_yourls: ''
+  _wp_jd_wp: ''
+  _wp_jd_bitly: ''
+  _wp_jd_clig: ''
+  _jd_twitter: ''
+  _jd_tweet_this: 'yes'
+author:
+  login: david
+  email: dvilchezm@gmail.com
+  display_name: David Vílchez Mendoza
+  first_name: David
+  last_name: Vílchez Mendoza
+---
+<p>Continuando con el post anterior vamos a cambiar el comportamiento de nuestro GridView. Para ello en WPF tenemos varias opciones:</p>
+<ul>
+<li>Behaviors[1]</li>
+<li>Attached properties[2]</li>
+</ul>
+<p>En esta ocasi&oacute;n nos hemos decantando por las attached properties. El proceso mental que he seguido para tomar esta decisi&oacute;n no esta muy claro, pero podriamos decir que creo que un attached property encaja mejor en el tipo de comportamiento que quiero implementar.</p>
+<p>Ya tenemos una zona donde mostrar los filtros que se estan aplicando sobre nuestro GridView. Ahora necesitamos a&ntilde;adir el comportamiento necesario[3].</p>
+<pre class="brush:c#">
+&nbsp;&nbsp;&nbsp; public class ShowFiltersBehavior
+&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public static DependencyProperty ShowFiltersInProperty =
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DependencyProperty.RegisterAttached("ShowFiltersIn",
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; typeof(TextBlock),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; typeof(ShowFiltersBehavior),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; new UIPropertyMetadata(ShowFiltersInChanged));
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; private static void ShowFiltersInChanged(DependencyObject target, DependencyPropertyChangedEventArgs e)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var element = target as GridView;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (element == null) throw new InvalidOperationException("This behavior can be attached to GridView item only.");
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if ((e.NewValue != null) &amp;&amp; (e.OldValue == null))
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; element.Filtered += element_Filtered;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; else if ((e.NewValue == null) &amp;&amp; (e.OldValue != null))
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; element.Filtered -= element_Filtered;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public static void SetShowFiltersIn(GridView element, TextBlock value)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; element.SetValue(ShowFiltersInProperty, value);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public static TextBlock GetShowFiltersIn(GridView element)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return (TextBlock)element.GetValue(ShowFiltersInProperty);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; static void element_Filtered(object sender, Telerik.Windows.Controls.GridView.GridViewFilteredEventArgs e)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var cabecera = (sender as GridView).GetValue(ShowFiltersInProperty) as TextBlock;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; cabecera.Text = &lt;obtener_filtros_en_modo_texto&gt;;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+    }
+</pre>
+<p>Una vez que tenemos implementada nuestra attached property, la usamos en la implementaci&oacute;n mas sencilla de la vista, sin usar el control template de momento.</p>
+<pre class="brush:xml">
+&lt;Grid&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;Grid.RowDefinitions&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;RowDefinition Height="auto" /&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;RowDefinition Height="*" /&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;/Grid.RowDefinitions&gt;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;TextBlock x:Name="Filtros" /&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;custom:GridView
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; x:Name="Grid"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Grid.Row="1"
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; behaviors:ShowFiltersBehavior.ShowFiltersIn="{Binding ElementName=Filtros}"&gt;
+</pre>
+<p>Ya lo tenemos, ahora solo queda cerrar el circulo y suar nuestra attached property en nuestro control template.<br />
+[1]-<a href="http://www.wpftutorial.net/Behaviors.html">http://www.wpftutorial.net/Behaviors.html</a><br />
+[2]-<a href="http://www.wpftutorial.net/AttachedProperties.html">http://www.wpftutorial.net/AttachedProperties.html<br />
+</a> [3]-<a href="http://blog.fossmo.net/post/How-to-create-an-attached-property-in-WPF-using-a-ComboBox.aspx">http://blog.fossmo.net/post/How-to-create-an-attached-property-in-WPF-using-a-ComboBox.aspx</a></p>

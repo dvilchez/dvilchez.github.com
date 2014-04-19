@@ -1,0 +1,33 @@
+---
+layout: post
+title: Ocultar un formulario que contiene AxSHDocVw.AxWebBrowser
+categories:
+- programación
+- tips&amp;tricks
+tags:
+- AxSHDocVw.AxWebBrowser
+- "ñapa"
+- navegador
+- windows forms
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '2'
+author:
+  login: david
+  email: dvilchezm@gmail.com
+  display_name: David Vílchez Mendoza
+  first_name: David
+  last_name: Vílchez Mendoza
+---
+<p><strong>Problema:</strong></p>
+<p>Tenemos una aplicación que es un MDI en cuyo interior solo se muestra una ventana a la vez. Para esto tiene implementado un "sofisticado control" (nótese la ironía) que oculta y muestra convenientemente las ventanas. Pues bien, en este escenario a veces se muestran ventana que contiene el dichoso control COM <strong>AxSHDocVw.AxWebBrowser. </strong>La primera vez que carga dichas ventanas no hay problema. El problema surge cuando se cambia de ventana activa,  la ventana que contiene el navegador se oculta y después si queremos volver a mostrarla el navegador aparece en un blanco inmaculado y no muestra nada.</p>
+<p><strong>Observaciones:</strong></p>
+<p>Jugando un poco con el navegador he observado que cuando el form que lo contiene se oculta algo cambia en él, no he podido determinar este algo. Y el navegador deja de estar incrustado en el windows form y se convierte en una ventana a parte.</p>
+<p><a href="http://dvilchez.net/wp-content/uploads/2008/09/error-1.bmp"><img class="alignnone size-full wp-image-102" title="error AxSHDocVw.AxWebBrowser" src="http://dvilchez.net/wp-content/uploads/2008/09/error-1.bmp" alt="Error AxSHDocVw.AxWebBrowser" /></a></p>
+<p><strong>Primera solución:</strong></p>
+<p>Normalmente ante un problema primero busco una solución mas o menos admisible y después busco una mejor solución.</p>
+<p>La primera solución a la que he llegado consiste en sacar el navegador de la colección de controles del formulario antes de que el formulario se oculte y viceversa. Funciona bastante bien pero no deja de ser una ñapa del 15.</p>
+<p><strong>Solución más correcta:</strong></p>
+<p>De momento he decidido que para este caso y dado que el control esta obsoleto no merece la pena invertir tiempo buscando una solución mejor.</p>

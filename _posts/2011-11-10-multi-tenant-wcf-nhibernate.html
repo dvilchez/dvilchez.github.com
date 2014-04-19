@@ -1,0 +1,43 @@
+---
+layout: post
+title: Multi tenant wcf nhibernate
+categories: []
+tags: []
+status: draft
+type: post
+published: false
+meta:
+  _jd_tweet_this: 'yes'
+  _jd_twitter: ''
+  _wp_jd_clig: ''
+  _wp_jd_bitly: ''
+  _wp_jd_wp: ''
+  _wp_jd_yourls: ''
+  _wp_jd_url: ''
+  _wp_jd_target: ''
+  _jd_wp_twitter: ''
+  _jd_post_meta_fixed: 'true'
+  _gdocID: 1cVCzcIeuNxVnXJFTUVPAtcVwQLVfo_kKgGrqKZJc1Hk
+  _gdocs_comments: ''
+author: 
+---
+<p>arquitectura shared database</p>
+<p>para discrimir las peticiones al servicio usamos distintos host:</p>
+<p><a class="c3" href="http://mikehadlow.blogspot.com/2009/05/multi-tenanted-services-with-windsor.html">http://mikehadlow.blogspot.com/2009/05/multi-tenanted-services-with-windsor.html</a></p>
+<p>para filtrar e insertar el teant id en todas nuestras entidades usamos interceptor:</p>
+<p><a class="c3" href="http://www.agileatwork.com/bolt-on-multi-tenancy-in-asp-net-mvc-with-unity-and-nhibernate-part-ii-commingled-data/">http://www.agileatwork.com/bolt-on-multi-tenancy-in-asp-net-mvc-with-unity-and-nhibernate-part-ii-commingled-data/</a></p>
+<p>Mas teoría sobre multitenant:</p>
+<p><a class="c3" href="http://ayende.com/blog/3530/multi-tenancy-approaches-and-applicability">http://ayende.com/blog/3530/multi-tenancy-approaches-and-applicability</a></p>
+<p><a class="c3" href="http://msdn.microsoft.com/en-us/library/aa479086.aspx">http://msdn.microsoft.com/en-us/library/aa479086.aspx</a></p>
+<p>arquitectura different databse</p>
+<p>ejemplo:<a class="c3" href="http://mikehadlow.blogspot.com/2008/11/multi-tenancy-part-2-components-and.html">http://mikehadlow.blogspot.com/2008/11/multi-tenancy-part-2-components-and.html</a></p>
+<p>Solución</p>
+<p>Para propagar el tent id utilizamos este proyecto <a class="c3" href="http://code.google.com/p/autofac/source/checkout">http://code.google.com/p/autofac/source/checkout</a></p>
+<p>Clases base:</p>
+<p>ITenantIdentificationStrategy.cs</p>
+<p>TenantIdentificationContextExtension.cs</p>
+<p>TenantPropagationBehavior.cs</p>
+<p>TenantPropagationMessageInspector.cs</p>
+<p>&mdash;&mdash;-</p>
+<p>No encuentro una forma “limpia” de hacerlo en nhibernate asi que apliocaremos esta solución:</p>
+<p><a class="c3" href="http://www.agileatwork.com/bolt-on-multi-tenancy-in-asp-net-mvc-with-unity-and-nhibernate-part-ii-commingled-data/">http://www.agileatwork.com/bolt-on-multi-tenancy-in-asp-net-mvc-with-unity-and-nhibernate-part-ii-commingled-data/</a></p>

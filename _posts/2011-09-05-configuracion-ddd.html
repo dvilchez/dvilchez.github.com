@@ -1,0 +1,50 @@
+---
+layout: post
+title: configuracion ddd
+categories: []
+tags: []
+status: draft
+type: post
+published: false
+meta:
+  _jd_post_meta_fixed: 'true'
+  _jd_wp_twitter: ''
+  _wp_jd_target: ''
+  _wp_jd_url: ''
+  _jd_tweet_this: 'yes'
+  _jd_twitter: ''
+  _wp_jd_clig: ''
+  _wp_jd_bitly: ''
+  _wp_jd_wp: ''
+  _wp_jd_yourls: ''
+  _gdocID: 1jE-sPq-_Q6mI6LKdXxdQekIpRiqoEeZr_iIg25b7xSY
+author: 
+---
+<p class="c0"><span>configuración??</span></p>
+<p class="c0"><span>esta configuración pertenece a la aplicación o al dominio? primera pregunta jodidilla. Una posible respuesta:</span></p>
+<p class="c0 c1"><span></span></p>
+<p class="c0"><span>Only if the setting is directly affecting business logic does it</span></p>
+<p class="c0"><span>belong in the domain</span></p>
+<p class="c0 c1"><span></span></p>
+<p class="c0"><span>Una posible implementación:</span></p>
+<p class="c0 c1"><span></span></p>
+<p class="c0"><span>public class CustomerPreferenceSettings</span></p>
+<p class="c0"><span>{</span></p>
+<p class="c0"><span>//getters since this is probably a value object</span></p>
+<p class="c0"><span>}</span></p>
+<p class="c0 c1"><span></span></p>
+<p class="c0"><span>public class CustomerPreferenceSettingsRepository</span></p>
+<p class="c0"><span>{</span></p>
+<p class="c0"><span>private ISettingsProvider provider;</span></p>
+<p class="c0"><span>//rules for accessing the settings that uses the infrastructure interface</span></p>
+<p class="c0"><span>}</span></p>
+<p class="c0 c1"><span></span></p>
+<p class="c0"><span>public interface ISettingsProvider{}</span></p>
+<p class="c0 c1"><span></span></p>
+<p class="c0"><span>Infrastructure:</span></p>
+<p class="c0"><span>public WebPropertiesSettingsProvider : ISettingsProvider</span></p>
+<p class="c0"><span>{</span></p>
+<p class="c0"><span>//implementation</span></p>
+<p class="c0"><span>}</span></p>
+<p class="c0 c1"><span></span></p>
+<p class="c0"><span>Pero... en cualquier caso necesitamos una infrastructura subyacente...</span></p>

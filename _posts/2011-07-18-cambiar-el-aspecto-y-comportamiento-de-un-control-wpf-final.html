@@ -1,0 +1,57 @@
+---
+layout: post
+title: Cambiar el aspecto y comportamiento de un control WPF Final
+categories: []
+tags: []
+status: draft
+type: post
+published: false
+meta:
+  _jd_post_meta_fixed: 'true'
+  _jd_wp_twitter: ''
+  _wp_jd_target: ''
+  _wp_jd_url: ''
+  _wp_jd_yourls: ''
+  _wp_jd_wp: ''
+  _wp_jd_bitly: ''
+  _wp_jd_clig: ''
+  _jd_twitter: ''
+  _jd_tweet_this: 'yes'
+author:
+  login: david
+  email: dvilchezm@gmail.com
+  display_name: David Vílchez Mendoza
+  first_name: David
+  last_name: Vílchez Mendoza
+---
+<p>Hasta ahora tenemos:</p>
+<ul>
+<li>Cambiado el aspecto visual de nuetro control</li>
+<li>Agregado comportamiento a nuetsro control</li>
+</ul>
+<p>&iquest;Que tal si lo ponemos todo junto?</p>
+<pre class="brush:xml">&lt;Style x:Key="RadGridViewStyle1" TargetType="{x:Type telerik:RadGridView}"&gt;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;Setter Property="ClientesPotenciales:ShowFiltersBehavior.ShowFiltersIn" Value="{Binding ElementName=Filtros}"/&gt;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;Setter Property="Template"&gt;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;Setter.Value&gt;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;ControlTemplate TargetType="{x:Type telerik:RadGridView}"&gt;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;Grid&gt;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;Grid.RowDefinitions&gt;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;RowDefinition Height="Auto"/&gt;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;RowDefinition/&gt;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/Grid.RowDefinitions&gt;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;Border d:LayoutOverrides="Height" CornerRadius="5" Background="{DynamicResource FondoFilaPar}" BorderThickness="2"&gt;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;StackPanel Orientation="Horizontal"&gt;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;Image Source="{DynamicResource ImagenBotonInfo}" VerticalAlignment="Top" Margin="2"/&gt;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;TextBlock x:Name="Filtros" Style="{DynamicResource TextBlockStyleAlerta}" Text="{Binding TextoCabeceraFiltros, Mode=OneWayToSource}" Margin="2"/&gt;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/StackPanel&gt;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;/Border&gt;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;AdornerDecorator d:LayoutOverrides="Width, Height" Grid.Row="1"&gt;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;Border x:Name="PART_MasterGridContainer" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}"&gt;
+&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;Grid x:Name="HierrarchyBackground" Background="{TemplateBinding Background}"&gt;
+</pre>
+<p>Pues que no funciona :( He probado todos los bindings[1], pero no hay forma. El problmea parece ser que esta en la diferencia entre el Visual Tree y Logical Tree de WPF[2]. Muy tarde para enterarse de que un cambio en el control template de un control supone un cambio en el visual tree mientras que el binding de un elementname resuelve sobre el logical tree[3].</p>
+<p>Tal vez sea el momento de probar otra aproximacion... behaviors? Si sabes que estoy haciendo mal o tienes otra idea no dudes en comentarla.</p>
+<p>[1]-<a href="http://www.nbdtech.com/Free/WpfBinding.pdf">http://www.nbdtech.com/Free/WpfBinding.pdf<br />
+[2]-http://www.wpftutorial.net/logicalandvisualtree.html<br />
+[3]-http://stackoverflow.com/questions/705853/binding-elementname-does-it-use-visual-tree-or-logical-tree</a></p>
