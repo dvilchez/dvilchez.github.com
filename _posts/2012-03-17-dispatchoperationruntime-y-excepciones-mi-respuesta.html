@@ -1,4 +1,6 @@
 ---
+comments: true
+share: true
 layout: post
 title: DispatchOperationRuntime y Excepciones. Mi respuesta.
 categories:
@@ -31,12 +33,12 @@ author:
   last_name: Vílchez Mendoza
 ---
 <p>Lo primero que anda mal es el mensaje que lanza la excepción.</p>
-<p><a href="http://dvilchez.net/wp-content/uploads/2012/03/error_incorrecto1.png"><img class="alignnone size-full wp-image-389" title="error_incorrecto" alt="" src="http://dvilchez.net/wp-content/uploads/2012/03/error_incorrecto1.png" width="617" height="29" /></a></p>
+<p><a href="{{ site.url }}/images/uploads/2012/03/error_incorrecto1.png"><img class="alignnone size-full wp-image-389" title="error_incorrecto" alt="" src="{{ site.url }}/images/uploads/2012/03/error_incorrecto1.png" width="617" height="29" /></a></p>
 <p>Pero realmente el método al que se llamo fue:</p>
-<p><a href="http://dvilchez.net/wp-content/uploads/2012/03/llamada.png"><img class="alignnone size-full wp-image-388" title="llamada" alt="" src="http://dvilchez.net/wp-content/uploads/2012/03/llamada.png" width="361" height="39" /></a></p>
+<p><a href="{{ site.url }}/images/uploads/2012/03/llamada.png"><img class="alignnone size-full wp-image-388" title="llamada" alt="" src="{{ site.url }}/images/uploads/2012/03/llamada.png" width="361" height="39" /></a></p>
 <p>Esto, a parte de hacerte perder unas horas intentando determinar el problema, es un mal menor y un error que le puede pasar a cualquiera.</p>
 <p>Para mi el problema mas grande esta en la llamada a DiagnosticUtility.FailFast. Este método recibe un mensaje (el de arriba), el tipo de excepción que se captura y el mensaje de la excepción, pero perdemos el resto de información. Por tanto lo que se muestra a la salida es esto:</p>
-<p><a href="http://dvilchez.net/wp-content/uploads/2012/03/image001.png"><img class="alignnone  wp-image-390" title="image001" alt="" src="http://dvilchez.net/wp-content/uploads/2012/03/image001.png" width="545" height="281" /></a></p>
+<p><a href="{{ site.url }}/images/uploads/2012/03/image001.png"><img class="alignnone  wp-image-390" title="image001" alt="" src="{{ site.url }}/images/uploads/2012/03/image001.png" width="545" height="281" /></a></p>
 <p>Bastante inútil, ¿no creéis? Sin embargo la excepción original incluía la verdadera pila de llamadas y podíamos determinar exactamente donde se generaba la excepción, que por cierto era un error de desbordamiento al hacer el flush de nhibernate.</p>
 <p>Como no podemos tocar el código de WCF (DispatchOperationRuntime) tendremos que ser más imaginativos. Al final opte por envolver la excepción original en otra que devolviera como mensaje toda la información que me parecía relevante. Supongo que podría haber intentado una solución más elegante con algo de AOP pero también más compleja.</p>
 <p><strong>Update:</strong></p>

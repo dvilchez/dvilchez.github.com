@@ -1,4 +1,6 @@
 ---
+comments: true
+share: true
 layout: post
 title: Manteniendo una aplicación Round 1
 categories:
@@ -22,7 +24,7 @@ author:
 ---
 <p><strong>Descripción:</strong></p>
 <p>Imagínate que acabas de de llegar al trabajo y te dicen que <a href="http://dvilchez.net/?p=100" target="_self">el error que descubriste ayer</a> tiene que ser solucionado de una manera lo mas genérica posible y “ensuciando” lo menos posible el código. El escenario con el que tienes que lidiar es el siguiente:</p>
-<p>[caption id="attachment_110" align="aligncenter" width="500" caption="Diagrama de clases"]<a href="http://dvilchez.net/wp-content/uploads/2008/10/diagrama1.png"><img class="size-full wp-image-110" title="diagrama1" src="http://dvilchez.net/wp-content/uploads/2008/10/diagrama1.png" alt="Diagrama de clases" width="500" height="631" /></a>[/caption]</p>
+<p><a href="{{ site.url }}/images/uploads/2008/10/diagrama1.png"><img class="size-full wp-image-110" title="diagrama1" src="{{ site.url }}/images/uploads/2008/10/diagrama1.png" alt="Diagrama de clases" width="500" height="631" /></a></p>
 <p>Independientemente de la calidad de dicho diseño del que podremos hablar también en otra ocasión, hay que meter <a href="http://dvilchez.net/?p=100">la consabida modificación</a> para que el usuario nos invite a un cafecito. ¿Por donde empezamos a meter mano?</p>
 <p><strong>1º Aproximación:</strong></p>
 <p>Lo primero que intente, en vista del diseño, fue meterle mano al control. En el VisibleChanged dependiendo del valor de la propiedad Visible quitaba o ponía el AxWebBrowser en la colección de controles de ControlwebBrowser. El problema es como detectar que el Form se oculta.</p>
