@@ -27,24 +27,22 @@ author:
   first_name: David
   last_name: Vílchez Mendoza
 ---
-<p><!-- code formatted by http://manoli.net/csharpformat/ --></p>
-<pre class="csharpcode">
-    <span class="kwrd">private</span> <span class="kwrd">void</span> Application_DispatcherUnhandledException(
-           <span class="kwrd">object</span> sender
-          , DispatcherUnhandledExceptionEventArgs e)
-    {
-        Process((<span class="kwrd">dynamic</span>)e.Exception);
-    }
-
-    <span class="kwrd">public</span> <span class="kwrd">void</span> Process(Exception exception)
-    {
-        Log.Warn(<span class="str">"Exception"</span>);
-    }
-
-    <span class="kwrd">public</span> <span class="kwrd">void</span> Process(ArgumentException exception)
-    {
-        Log.Debug(<span class="str">"ArgumentException"</span>);
-    }</pre>
+{% highlight csharp %}
+private void Application_DispatcherUnhandledException(
+       object sender
+      , DispatcherUnhandledExceptionEventArgs e)
+{
+    Process((dynamic)e.Exception);
+}
+public void Process(Exception exception)
+{
+    Log.Warn("Exception");
+}
+public void Process(ArgumentException exception)
+{
+    Log.Debug("ArgumentException");
+}
+{% endhighlight %}
 <p><strong id="internal-source-marker_0.39775900659151375">Referencias:<br />
 <a href="http://en.wikipedia.org/wiki/Dynamic_dispatch">http://en.wikipedia.org/wiki/Dynamic_dispatch</a><br />
 <a href="http://mstecharchitect.blogspot.com/2008/11/how-to-handle-unhandled-exception-in.html">http://mstecharchitect.blogspot.com/2008/11/how-to-handle-unhandled-exception-in.html</a><br />

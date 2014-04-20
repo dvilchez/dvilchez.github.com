@@ -32,18 +32,18 @@ author:
 <p>Ayer necesité convertir "demasiados" archivos wma a mp3. Buscando en google encontré <a title="wma to mp3 linux" href="http://www.elmodem.com/archivo/2006/08/04/convertir-archivos-wma-a-mp3-en-linux/">este script</a>, pero es para linux. Así que ni corto ni perezoso me puse y los pase a windows.</p>
 <p>Tenéis que descargar <a title="Mplayer" href="http://www.mplayerhq.hu/design7/news.html">mplayer</a> y <a title="lame" href="http://lame.sourceforge.net/">lame</a> en sus versiones para windows.</p>
 <p>fichero1.bat</p>
-<p>[vb]</p>
-<p>for /f  "tokens=*" %%a in ('dir *.wma /s/b') do fichero2.bat "%%a"</p>
-<p>[/vb]</p>
+{% highlight bat %}
+for /f  "tokens=*" %%a in ('dir *.wma /s/b') do fichero2.bat "%%a"
+{% endhighlight %}
 <p>fichero2.bat</p>
-<p>[vb]</p>
-<p>set entrada=%1<br />
-mplayer %entrada% -ao pcm<br />
-set wavfile=%entrada:wma=wav%<br />
-move audiodump.wav %wavfile%<br />
-set mp3file=%entrada:wma=mp3%<br />
-lame %wavfile% %mp3file%<br />
-del %wavfile%<br />
-del %entrada%</p>
-<p>[/vb]</p>
+{% highlight bat %}
+set entrada=%1
+mplayer %entrada% -ao pcm
+set wavfile=%entrada:wma=wav%
+move audiodump.wav %wavfile%
+set mp3file=%entrada:wma=mp3%
+lame %wavfile% %mp3file%
+del %wavfile%
+del %entrada%
+{% endhighlight %}
 <p>Lo único que tienes que modificar es la ruta donde hacer el dir y rular el fichero1.bat. Para alguien con  bastos conocimientos en la materia seguramente sea muy cutre pero fue bastante rápido y funciona. No obstante si tienes alguna mejora dejarla en los comentarios.</p>

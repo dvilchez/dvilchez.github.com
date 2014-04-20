@@ -28,7 +28,7 @@ author:
   first_name: David
   last_name: Vílchez Mendoza
 ---
-<p><a href="http://dvilchez.net/wp-content/uploads/2010/11/android-rendered.jpg"><img class="alignright size-medium wp-image-177" title="android" src="http://dvilchez.net/wp-content/uploads/2010/11/android-rendered-300x187.jpg" alt="" width="300" height="187" /></a>Después de mucho tiempo utilizando <a href="http://en.wikipedia.org/wiki/Windows_Mobile">Windows Mobile</a> (desde 2003 aproximadamente)  calló en mis manos  una <a href="http://www.htc.com/es/product/magic/overview.html">Htc Magic</a>. Fue entonces cuando me di cuenta de lo frustrante que es la experiencia Windows Mobile para el usuario.<br />
+<p>Después de mucho tiempo utilizando <a href="http://en.wikipedia.org/wiki/Windows_Mobile">Windows Mobile</a> (desde 2003 aproximadamente)  calló en mis manos  una <a href="http://www.htc.com/es/product/magic/overview.html">Htc Magic</a>. Fue entonces cuando me di cuenta de lo frustrante que es la experiencia Windows Mobile para el usuario.<br />
 <a href="http://www.android.com/">Android</a> lo hace todo tan sencillo y funciona tan bien que el paso de un sistema a otro fue muy natural, nada traumático.</p>
 <p>Ya metido en harina me hice con una <a href="http://www.htc.com/es/product/desire/overview.html">Htc Desire</a>, la misma que actualmente me acompaña a todos sitios. Mucho podría escribir aquí sobre las diferencias entre ambos sistemas y sobre mi experiencia con Android pero para eso ya hay grandes fuentes de donde beber:</p>
 <ul>
@@ -38,17 +38,19 @@ author:
 <p>El caso es que después de un tiempo con la rom original decidí <a href="http://techtastico.com/post/root-android/">rootearla</a> y ponerle una <a href="http://4ndroid.com/que-son-las-roms/">rom cocinada</a>. La elegida después de algunas pruebas fue <a href="http://forum.xda-developers.com/showthread.php?t=712615">OpenDesire</a>. Una rom muy equilibrada con muchas características que no trae "out of the box", muy rápida y sin los programas que le mete htc a su desire, eso quiere decir también sin <a href="http://en.wikipedia.org/wiki/HTC_Sense">htc sense</a>. He tenido esta rom durante un par de meses pero a cada nueva versión se resolvia algun problema y aparecía otro. Pequeños problemas no obstante pero siempre un pero. Total que recientemente decidi volver a la rom original.</p>
 <p>El problema de la rom original es que trae algunos programas que no se pueden desinstalar y que si no estas rápido y se lo impides se conectan a Internet y consumen batería. Después de buscar un rato encontré la forma de eliminar dichas aplicaciones:</p>
 <p><a href="http://www.elrincondelandroid.com/tutoriales/394-como-quitar-aplicaciones-del-telefono-en-htc-desire.html">Borrar aplicaciones Htc SENSE</a><br />
-adb shell<br />
-mount system<br />
-cd system<br />
-cd app<br />
-ls<br />
-rm *Friend*<br />
-rm *PDFView*<br />
-rm *Twitter*<br />
-rm *Stack*<br />
-rm *Quicko*<br />
-rm *Foot*</p>
+{% highlight bat %}
+adb shell
+mount system
+cd system
+cd app
+ls
+rm *Friend*
+rm *PDFView*
+rm *Twitter*
+rm *Stack*
+rm *Quicko*
+rm *Foot*
+{% endhighlight %}
 <p>El resultado fue genial, el consumo de batería era menor y sin programas que no quería. El problema llego con una actualización de la rom original.<br />
 Pues sí, resulta que si eliminas dichos programas y despues intentas instalar una actualización oficial fallará. El primer fallo es sobre la firma. Tienes que decirle al <a href="http://www.androidsis.com/instalando-un-recovery-nuevo-en-android/">recovery</a> que se salte esa comprobación. El siguiente error es que no encuentra alguna de las aplicaciones borradas. Mi solución fue restaurar la rom y aplicar el update. También podrías guardar una copia de dichos programas y restaurarla antes de una actualización.</p>
 <p>De momento yo sigo con esos programas instalados, eso sí, bien configurados para que no se conecten a Internet.</p>

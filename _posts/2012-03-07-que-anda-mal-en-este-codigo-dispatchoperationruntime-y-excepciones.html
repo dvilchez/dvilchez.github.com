@@ -31,4 +31,67 @@ author:
   first_name: David
   last_name: Vílchez Mendoza
 ---
-<p>[gist id=1995747]</p>
+DispatchOperationRuntime.cs
+{% highlight csharp %}
+class DispatchOperationRuntime
+{
+        //...
+        void UninitializeCallContextCore(ref MessageRpc rpc)
+        {
+            IClientChannel channel = rpc.Channel.Proxy as IClientChannel;
+            int offset = this.Parent.CallContextCorrelationOffset;
+ 
+            try
+            {
+                for (int i = this.CallContextInitializers.Length - 1; i >= 0; i--)
+                {
+                    ICallContextInitializer initializer = this.CallContextInitializers[i];
+                    initializer.AfterInvoke(rpc.Correlation[offset + i]);
+                }
+            }
+            catch (Exception e)
+            {
+                // thread-local storage may be corrupt
+                DiagnosticUtility.FailFast(string.Format(CultureInfo.InvariantCulture, "ICallContextInitializer.BeforeInvoke threw an exception of type {0}: {1}", e.GetType(), e.Message));
+            }
+        }
+        //....
+}
+{% endhighlight %}
+
+NhSessionPerCallContext.cs
+{% highlight csharp %}
+public class NhSessionPerCallContext:ICallContextInitializer
+{
+        //...
+        public void AfterInvoke(object correlationState)
+        {
+            var session = CurrentSessionContext.Unbind(_sessionFactory);
+            if (session != null)
+            {
+                try
+                {
+                    session.Flush();
+                    if (session.Transaction.IsActive)
+                    {
+                        session.Transaction.Commit();
+                    }
+                }
+                catch (Exception e)
+                {
+                    if (session.Transaction.IsActive)
+                    {
+                        session.Transaction.Rollback();
+                    }
+                    throw;
+                }
+                finally
+                {
+                    session.Close();
+                    session.Dispose();
+                }
+            }
+        }
+        //...
+ }
+ {% endhighlight %}

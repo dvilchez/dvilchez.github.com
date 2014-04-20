@@ -17,4 +17,8 @@ author:
   first_name: David
   last_name: Vílchez Mendoza
 ---
-<p><a href="http://www.devmuse.com/2008/03/22/how-to-reset-identity-increment-value-in-ms-sql/">Reiniciar columna identity</a>: DBCC CHECKIDENT ( &lt;table name&gt;,RESEED,&lt;new value&gt;)</p>
+<p><a href="http://www.devmuse.com/2008/03/22/how-to-reset-identity-increment-value-in-ms-sql/">Reiniciar columna identity</a>: 
+{% highlight sql %}
+DBCC CHECKIDENT ( <table name>;,RESEED,<new value>;)
+{% endhighlight %}
+</p>

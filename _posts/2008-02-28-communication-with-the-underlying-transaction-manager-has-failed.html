@@ -23,44 +23,46 @@ author:
 <p><em>de datos esta en un Windows 2003 server (service pack 1) y el web</em></p>
 <p><em>service en un Windows xp(service pack 2). El problema viene con las</em></p>
 <p><em>transacciones dtc que me lanzan un error:</em></p>
-<p><em>Mensaje: Error de comunicación con el administrador de transacciones</em></p>
-<p><em>subyacente.</em></p>
-<p><em>Source:</em></p>
-<p><em>Traza:</em></p>
-<p><em>HelpLink:</em></p>
-<p><em>--------------------------------------------------------</em></p>
-<p><em>InnerException</em></p>
-<p><em>--------------------------------------------------------</em><br />
-<em>Mensaje: Error de comunicación con el administrador de transacciones</em></p>
-<p><em>subyacente.</em></p>
-<p><em>Source: System.Data</em></p>
-<p><em>Traza: en</em></p>
-<p><em>System.Data.Common.DbDataAdapter.UpdatedRowStatusErrors(RowUpdatedEventArgs</em></p>
-<p><em>rowUpdatedEvent, BatchCommandInfo[] batchCommands, Int32 commandCount)</em></p>
-<p><em>en</em></p>
-<p><em>System.Data.Common.DbDataAdapter.UpdatedRowStatus(RowUpdatedEventArgs</em></p>
-<p><em>rowUpdatedEvent, BatchCommandInfo[] batchCommands, Int32 commandCount)</em></p>
-<p><em>en System.Data.Common.DbDataAdapter.Update(DataRow[] dataRows,</em></p>
-<p><em>DataTableMapping tableMapping) en</em></p>
-<p><em>System.Data.Common.DbDataAdapter.UpdateFromDataTable(DataTable</em></p>
-<p><em>dataTable, DataTableMapping tableMapping) en</em></p>
-<p><em>System.Data.Common.DbDataAdapter.Update(DataTable dataTable) en</em></p>
-<p><em>Encuesta.CapaEntidad.EncuestaDSTableAdapters.PRG_PREGUNTATableAdapter.Update(PRG_PREGUNTADataTable</em></p>
-<p><em>dataTable) en Encuesta.CapaDatos.EncuestaAD.Actualizar(EncuestaDS</em></p>
-<p><em>Encuesta) en Encuesta.CapaNegocio.EncuestaCN.Actualizar(EncuestaDS</em></p>
-<p><em>Encuesta)</em></p>
-<p><em>TargetSite: Void</em></p>
-<p><em>UpdatedRowStatusErrors(System.Data.Common.RowUpdatedEventArgs,</em></p>
-<p><em>BatchCommandInfo[], Int32)</em></p>
-<p><em>HelpLink:</em></p>
-<p><em>Este error esta más que documentado así que me descargue el dtcping</em></p>
-<p><em>para que me ayudara a resolverlo. El dtcping me da el siguiente error:</em></p>
-<p><em>Problem:fail to invoke remote RPC method</em></p>
-<p><em>Error(0x6D9) at dtcping.cpp @303</em></p>
-<p><em>--&gt;RPC pinging exception</em></p>
-<p><em>--&gt;1753(There are no more endpoints available from the endpoint</em></p>
-<p><em>mapper.)</em></p>
-<p><em>RPC test failed</em></p>
+{% highlight csharp %}
+Mensaje: Error de comunicación con el administrador de transacciones
+subyacente.
+Source:
+Traza:
+HelpLink:
+--------------------------------------------------------
+InnerException
+--------------------------------------------------------
+Mensaje: Error de comunicación con el administrador de transacciones
+subyacente.
+Source: System.Data
+Traza: en
+System.Data.Common.DbDataAdapter.UpdatedRowStatusErrors(RowUpdatedEventArgs
+rowUpdatedEvent, BatchCommandInfo[] batchCommands, Int32 commandCount)
+en
+System.Data.Common.DbDataAdapter.UpdatedRowStatus(RowUpdatedEventArgs
+rowUpdatedEvent, BatchCommandInfo[] batchCommands, Int32 commandCount)
+en System.Data.Common.DbDataAdapter.Update(DataRow[] dataRows,
+DataTableMapping tableMapping) en
+System.Data.Common.DbDataAdapter.UpdateFromDataTable(DataTable
+dataTable, DataTableMapping tableMapping) en
+System.Data.Common.DbDataAdapter.Update(DataTable dataTable) en
+Encuesta.CapaEntidad.EncuestaDSTableAdapters.PRG_PREGUNTATableAdapter.Update(PRG_PREGUNTADataTable
+dataTable) en Encuesta.CapaDatos.EncuestaAD.Actualizar(EncuestaDS
+Encuesta) en Encuesta.CapaNegocio.EncuestaCN.Actualizar(EncuestaDS
+Encuesta)
+TargetSite: Void
+UpdatedRowStatusErrors(System.Data.Common.RowUpdatedEventArgs,
+BatchCommandInfo[], Int32)
+HelpLink:
+Este error esta más que documentado así que me descargue el dtcping
+para que me ayudara a resolverlo. El dtcping me da el siguiente error:
+Problem:fail to invoke remote RPC method
+Error(0x6D9) at dtcping.cpp @303
+-->RPC pinging exception
+-->1753(There are no more endpoints available from the endpoint
+mapper.)
+RPC test failed
+{% endhighlight %}
 <p><em>También esta documentado (<a href="http://support.microsoft.com/?id=839880">http://support.microsoft.com/?id=839880</a>)</em></p>
 <p><em>pero he seguido esta guía al pie de la letra y no he avanzado nada,</em></p>
 <p><em>¿ha alguien se le ocurre que más puedo hacer?</em></p>

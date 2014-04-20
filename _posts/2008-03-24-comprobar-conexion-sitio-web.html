@@ -17,27 +17,28 @@ author:
   first_name: David
   last_name: Vílchez Mendoza
 ---
-<p>[csharp]<br />
-try<br />
-{<br />
-	HttpWebRequest reqFP = (HttpWebRequest)HttpWebRequest.Create(this.Url);<br />
-	HttpWebResponse rspFP = (HttpWebResponse)reqFP.GetResponse();</p>
-<p>	if (HttpStatusCode.OK == rspFP.StatusCode)<br />
-	{<br />
-		// HTTP = 200 - Internet connection available, server online<br />
-		rspFP.Close();<br />
-		return true;<br />
-	}<br />
-	else<br />
-	{<br />
-		// Other status - Server or connection not available<br />
-		rspFP.Close();<br />
-		return false;<br />
-	}<br />
-}<br />
-catch (WebException)<br />
-{<br />
-	// Exception - connection not available<br />
-	return false;<br />
-}<br />
-[/csharp]</p>
+{% highlight csharp %}
+try
+{
+	HttpWebRequest reqFP = (HttpWebRequest)HttpWebRequest.Create(this.Url);
+	HttpWebResponse rspFP = (HttpWebResponse)reqFP.GetResponse();
+	if (HttpStatusCode.OK == rspFP.StatusCode)
+	{
+		// HTTP = 200 - Internet connection available, server online
+		rspFP.Close();
+		return true;
+	}
+	else
+	{
+		// Other status - Server or connection not available
+		rspFP.Close();
+		return false;
+	}
+}
+catch (WebException)
+{
+	// Exception - connection not available
+	return false;
+}
+{% endhighlight %}
+

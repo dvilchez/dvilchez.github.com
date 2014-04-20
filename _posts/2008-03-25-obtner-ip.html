@@ -18,37 +18,37 @@ author:
   first_name: David
   last_name: Vílchez Mendoza
 ---
-<p>[csharp]<br />
-namespace NKUtilities<br />
-{<br />
-    using System;<br />
-    using System.Net;</p>
-<p>    public class DNSUtility<br />
-    {<br />
-        public static int Main(string[] args)<br />
-        {</p>
-<p>            String strHostName = new String("");<br />
-            if (args.Length == 0)<br />
-            {<br />
-                // Getting Ip address of local machine...<br />
-                // First get the host name of local machine.<br />
-                strHostName = DNS.GetHostName();<br />
-                Console.WriteLine("Local Machine's Host Name: " + strHostName);<br />
-            }<br />
-            else<br />
-            {<br />
-                strHostName = args[0];<br />
-            }</p>
-<p>            // Then using host name, get the IP address list..<br />
-            IPHostEntry ipEntry = DNS.GetHostByName(strHostName);<br />
-            IPAddress[] addr = ipEntry.AddressList;</p>
-<p>            for (int i = 0; i < addr.Length; i++)<br />
-            {<br />
-                Console.WriteLine("IP Address {0}: {1} ", i, addr[i].ToString());<br />
-            }<br />
-            return 0;<br />
-        }<br />
-    }<br />
-}<br />
-[/csharp]</p>
-<p>Via <a href="http://www.netomatix.com/MachineIp.aspx">netomatix</a></p>
+{% highlight csharp %}
+namespace NKUtilities
+{
+    using System;
+    using System.Net;
+    public class DNSUtility
+    {
+        public static int Main(string[] args)
+        {
+            String strHostName = new String("");
+            if (args.Length == 0)
+            {
+                // Getting Ip address of local machine...
+                // First get the host name of local machine.
+                strHostName = DNS.GetHostName();
+                Console.WriteLine("Local Machine's Host Name: " + strHostName);
+            }
+            else
+            {
+                strHostName = args[0];
+            }
+            // Then using host name, get the IP address list..
+            IPHostEntry ipEntry = DNS.GetHostByName(strHostName);
+            IPAddress[] addr = ipEntry.AddressList;
+            for (int i = 0; i < addr.Length; i++)
+            {
+                Console.WriteLine("IP Address {0}: {1} ", i, addr[i].ToString());
+            }
+            return 0;
+        }
+    }
+}
+{% endhighlight %}
+Via <a href="http://www.netomatix.com/MachineIp.aspx">netomatix</a>

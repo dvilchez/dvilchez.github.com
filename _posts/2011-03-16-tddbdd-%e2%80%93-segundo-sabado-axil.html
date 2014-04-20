@@ -36,35 +36,35 @@ author:
 <p>La primera persona que hablo sobre BDD fue <a href="http://dannorth.net/introducing-bdd/">Dan North</a>. En su artículo habla sobre todo el proceso que siguieron él y algunos amigos hasta dar con lo que llamaron BDD. Os animo a leer el artículo con atención. Para mí la palabra clave es “behaviour”.  Si quitamos la palabra test de nuestro proceso de desarrollo favorito y ponemos comportamiento no tendremos una batería de test que ejercita nuestras clases y métodos, tendremos <strong>el comportamiento de nuestros objetos expresado en forma de test</strong>. Esa es la clave.</p>
 <p>Un poco de código:</p>
 <p>Ejemplo en TDD:<br />
-<!-- code formatted by http://manoli.net/csharpformat/ --></p>
-<div class="csharpcode">
-<pre class="alt"><span class="lnum">   1:  </span>[TestClass]</pre>
-<pre><span class="lnum">   2:  </span><span class="kwrd">public</span> <span class="kwrd">class</span> CalculatorTests</pre>
-<pre class="alt"><span class="lnum">   3:  </span>{</pre>
-<pre><span class="lnum">   4:  </span>   [TestMethod]</pre>
-<pre class="alt"><span class="lnum">   5:  </span>   <span class="kwrd">public</span> <span class="kwrd">void</span> AddTest()</pre>
-<pre><span class="lnum">   6:  </span>   {</pre>
-<pre class="alt"><span class="lnum">   7:  </span>      var calc=<span class="kwrd">new</span> Calculator();</pre>
-<pre><span class="lnum">   8:  </span>      var result = calc.Add(3, 2);</pre>
-<pre class="alt"><span class="lnum">   9:  </span>      Assert.AreEqual(5,result);</pre>
-<pre><span class="lnum">  10:  </span>    }</pre>
-<pre class="alt"><span class="lnum">  11:  </span>}</pre>
-</div>
+</p>
+{% highlight csharp %}
+[TestClass]
+public class CalculatorTests
+{
+   [TestMethod]
+   public void AddTest()
+   {
+      var calc=new Calculator();
+      var result = calc.Add(3, 2);
+      Assert.AreEqual(5,result);
+    }
+}
+{% endhighlight %}
 <p>Ejemplo en BDD:<br />
-<!-- code formatted by http://manoli.net/csharpformat/ --></p>
-<div class="csharpcode">
-<pre class="alt"><span class="lnum">   1:  </span>[TestClass]</pre>
-<pre><span class="lnum">   2:  </span><span class="kwrd">public</span> <span class="kwrd">class</span> CalculatorSpecs</pre>
-<pre class="alt"><span class="lnum">   3:  </span>{</pre>
-<pre><span class="lnum">   4:  </span>    [TestMethod]</pre>
-<pre class="alt"><span class="lnum">   5:  </span>    <span class="kwrd">public</span> <span class="kwrd">void</span> given_two_natural_number_when_add_then_result_is_ok()</pre>
-<pre><span class="lnum">   6:  </span>    {</pre>
-<pre class="alt"><span class="lnum">   7:  </span>       var calc = <span class="kwrd">new</span> Calculator();</pre>
-<pre><span class="lnum">   8:  </span>       var result = calc.Add(3, 2);</pre>
-<pre class="alt"><span class="lnum">   9:  </span>       Assert.AreEqual(5, result);</pre>
-<pre><span class="lnum">  10:  </span>    }</pre>
-<pre class="alt"><span class="lnum">  11:  </span>}</pre>
-</div>
+</p>
+{% highlight csharp %}
+[TestClass]
+public class CalculatorSpecs
+{
+  [TestMethod]
+  public void given_two_natural_number_when_add_then_result_is_ok()
+  {
+    var calc = new Calculator();
+    var result = calc.Add(3, 2);
+    Assert.AreEqual(5, result);
+  }
+}
+{% endhighlight %}
 <p>¿Pero qué aporta BDD? Bueno, primero desterrar de una vez por todas la T(est) de su nombre, algo que muchos pedían a voz en grito. Y segundo, otra serie de beneficios, por ejemplo: la mejor documentación de tu código estará en tus test, serán menos frágiles o al menos mentirán menos ya que prueban el “qué “ y no el “cómo”, incluso, si tienes suerte, puede que tus clientes escriban los criterios de aceptación de sus historias usando <a href="https://github.com/aslakhellesoy/cucumber/wiki/gherkin">Gherkin</a> y cerrarás el círculo como hace Dan North en su artículo.</p>
 <p>Algunos dicen que BDD son test de aceptación. Yo pienso que un test tanto si es de aceptación, de integración, unitario o lo que sea debe y puede expresar un comportamiento. Otros hablan de niveles y dicen que BDD solo se puede aplicar a niveles más externos de la aplicación dejando TDD para las capas más internas y cercanas al desarrollador. Mi opinión es que estas confusiones las han provocado los framework y sus notaciones a la hora de expresar los comportamientos. Así tenemos <a href=" http://dannorth.net/introducing-bdd/">Given/When/Then</a> o <a href="http://codebetter.com/jpboodhoo/2007/11/29/getting-started-with-bdd-style-context-specification-base-na/">Context/Specification</a>. Pero no podemos dejar que estos frameworks nos digan dónde podemos usar BDD. Si para ti no es natural expresar los test de tus capas más internas con GWT entonces no lo uses, usa cualquier otra forma que te sea útil (can_add_two_numbers por ejemplo).</p>
 <p>BDD es la forma de hacer TDD del siglo 21, ¿te lo vas a perder?</p>
