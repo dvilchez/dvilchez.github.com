@@ -2,7 +2,7 @@
 comments: true
 share: true
 layout: post
-title: Posicionate
+title: Posici&oacute;nate
 status: publish
 type: post
 published: true
